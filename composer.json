@@ -1,5 +1,5 @@
 {
-    "name": "nitropack/nitropackcloud-sdk",
+    "name": "atj4me/nitropack-sdk",
     "description": "Client PHP SDK for NitroPack.io",
     "license": "BSD-2-Clause",
     "type" : "package",
@@ -12,7 +12,10 @@
     "autoload" : {
         "psr-4" : {
             "NitroPack\\SDK\\" : "NitroPack/SDK/"
-        }
+        },
+        "files": [
+          "bootstrap.php"
+        ]
     },
     "require": {
         "nitropack/httpclient": "~v1.1.0"
