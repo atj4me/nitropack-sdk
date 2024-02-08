@@ -7,8 +7,8 @@ class NitroPack_CookieStore {
 }
 
 if ( !defined("NITROPACK_HOME_URL") 
-    || !defined("NITROPACK_SITE_SECRET")
-    || !defined("NITROPACK_SITE_ID")
+    AND !defined("NITROPACK_SITE_SECRET")
+    AND !defined("NITROPACK_SITE_ID")
     ) {
 
 
