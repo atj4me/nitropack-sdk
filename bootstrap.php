@@ -6,10 +6,10 @@ class NitroPack_CookieStore {
     static $cookies = array();
 }
 
-if ( !defined("NITROPACK_HOME_URL") 
-    AND !defined("NITROPACK_SITE_SECRET")
-    AND !defined("NITROPACK_SITE_ID")
-    ) {
+if ( defined("NITROPACK_HOME_URL") // if URL Set => TRUE
+    && defined("NITROPACK_SITE_SECRET") // if Secret is available => TRUE
+    && defined("NITROPACK_SITE_ID") // if Site ID is unavailable => FALSE
+    ) { // TRUE AND TRUE AND FALSE => FALSE
 
 
     NitroPack_CookieStore::$cookies = $_COOKIE;
