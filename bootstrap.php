@@ -390,42 +390,42 @@ if ( defined("NITROPACK_HOME_URL") // if URL Set => TRUE
         }
     }
     
-    nitropack_handle_request();
-    if ( null !== $nitro = nitropack_get_instance() ) {
-        if ($nitro->isAllowedUrl($nitro->getUrl()) && $nitro->isAllowedRequest(true)) {
-            nitropack_init_webhooks();
-            ob_start(function($buffer) {
-                if (nitropack_is_optimizer_request()) {
-                    nitropack_add_tag(NULL, true); // Flush registered tags
-                }
+    // nitropack_handle_request();
+    // if ( null !== $nitro = nitropack_get_instance() ) {
+    //     if ($nitro->isAllowedUrl($nitro->getUrl()) && $nitro->isAllowedRequest(true)) {
+    //         nitropack_init_webhooks();
+    //         ob_start(function($buffer) {
+    //             if (nitropack_is_optimizer_request()) {
+    //                 nitropack_add_tag(NULL, true); // Flush registered tags
+    //             }
     
-                // Remove BOM from output
-                $bom = pack('H*','EFBBBF');
-                $buffer = preg_replace("/^($bom)*/", '', $buffer);
+    //             // Remove BOM from output
+    //             $bom = pack('H*','EFBBBF');
+    //             $buffer = preg_replace("/^($bom)*/", '', $buffer);
     
-                // Get the content type
-                $respHeaders = headers_list();
-                $contentType = NULL;
-                foreach ($respHeaders as $respHeader) {
-                    if (stripos(trim($respHeader), 'Content-Type:') === 0) {
-                        $contentType = $respHeader;
-                    }
-                }
+    //             // Get the content type
+    //             $respHeaders = headers_list();
+    //             $contentType = NULL;
+    //             foreach ($respHeaders as $respHeader) {
+    //                 if (stripos(trim($respHeader), 'Content-Type:') === 0) {
+    //                     $contentType = $respHeader;
+    //                 }
+    //             }
         
-                // If the content type header was detected and it's value does not contain 'text/html',
-                // don't attach the beacon script.
-                if ($contentType !== NULL && stripos($contentType, 'text/html') === false) {
-                    return $buffer;
-                }
+    //             // If the content type header was detected and it's value does not contain 'text/html',
+    //             // don't attach the beacon script.
+    //             if ($contentType !== NULL && stripos($contentType, 'text/html') === false) {
+    //                 return $buffer;
+    //             }
     
-                if (!preg_match("/<html.*?\s(amp|⚡)(\s|=|>)/", $buffer)) {
-                    $buffer = str_replace("</body", nitropack_get_beacon_script() . "</body", $buffer);
-                }
+    //             if (!preg_match("/<html.*?\s(amp|⚡)(\s|=|>)/", $buffer)) {
+    //                 $buffer = str_replace("</body", nitropack_get_beacon_script() . "</body", $buffer);
+    //             }
     
-                return $buffer;
-            }, 0, PHP_OUTPUT_HANDLER_FLUSHABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
-        } else {
-            header("X-Nitro-Disabled: 1");
-        }
-    }
+    //             return $buffer;
+    //         }, 0, PHP_OUTPUT_HANDLER_FLUSHABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
+    //     } else {
+    //         header("X-Nitro-Disabled: 1");
+    //     }
+    // }
 }
