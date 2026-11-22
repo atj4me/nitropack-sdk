@@ -30,6 +30,10 @@ class RemoteConfigFetcher extends Base {
             throw new \NitroPack\SDK\ChallengeProcessingException('Error while processing remote config challenge'); // TODO better error message and logging
         }
 
+        if (!is_array($challenge) || empty($challenge['sc0']) || empty($challenge['sc1']) || empty($challenge['cid']) || !isset($challenge['resp'])) {
+            throw new \NitroPack\SDK\ChallengeProcessingException('Malformed remote config challenge response');
+        }
+
         // verify that the challenge came from the API server
         $expectedResponse = $this->calculateChallengeResponse($challenge['sc0']);
 
@@ -128,7 +132,9 @@ class RemoteConfigFetcher extends Base {
     protected static function internal_hash_equals($known_string, $user_string) {
         // iSenseLabs modification to use the PHP function if available
         if (function_exists('hash_equals')) {
-            return hash_equals($known_string, $user_string);
+            // hash_equals() throws a TypeError on non-string input in PHP 8;
+            // a malformed API response must fail verification, not fatal.
+            return is_string($known_string) && is_string($user_string) ? hash_equals($known_string, $user_string) : false;
         }
         // We jump trough some hoops to match the internals errors as closely as possible
         $argc = func_num_args();
