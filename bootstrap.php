@@ -6,7 +6,7 @@ class NitroPack_CookieStore {
     static $cookies = array();
 }
 
-NitroPack_CookieStore::$cookies = $_COOKIE;
+NitroPack_CookieStore::$cookies = $_COOKIE ?? array();
 /* You must define these constants before requiring this file for easier installation of SDK updates
 define("NITROPACK_HOME_URL", "Your home page URL");
 define("NITROPACK_SITE_ID", "your site ID");
@@ -55,7 +55,7 @@ function nitropack_get_instance($siteId = NULL, $siteSecret = NULL, $url = NULL)
             } else {
                 $instances[$key] = new NitroPack\SDK\NitroPack($siteId, $siteSecret, NULL, $url);
             }
-        } catch(\Exception $e) {
+        } catch (\Throwable $e) {
             $instances[$key] = NULL;
         }
     }
@@ -120,7 +120,7 @@ function nitropack_handle_request() {
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // Fail silently
         }
     }
@@ -166,7 +166,7 @@ function nitropack_handle_beacon() {
                     header("X-Nitro-Beacon: SKIP");
                     printf("Cache exists already");
                 }
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 // not a critical error, do nothing
             }
         }
@@ -181,7 +181,7 @@ function nitropack_handle_webhook() {
             if (null !== $nitro = nitropack_get_instance() ) {
                 try {
                     $nitro->fetchConfig();
-                } catch (\Exception $e) {}
+                } catch (\Throwable $e) {}
             }
             break;
         case "cache_ready":
@@ -237,7 +237,7 @@ function nitropack_sdk_invalidate($url = NULL, $tag = NULL, $reason = NULL) {
             }
 
             $nitro->invalidateCache($url, $tag, $reason);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
 
@@ -263,7 +263,7 @@ function nitropack_sdk_purge($url = NULL, $tag = NULL, $reason = NULL, $type = \
             }
 
             $nitro->purgeCache($url, $tag, $type, $reason);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
 
@@ -281,7 +281,7 @@ function nitropack_sdk_purge_local($url = NULL) {
             } else {
                 $nitro->purgeLocalCache(NITROPACK_USE_QUICK_PURGE);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
 
@@ -297,7 +297,7 @@ function nitropack_sdk_delete_backlog() {
             if ($nitro->backlog->exists()) {
                 $nitro->backlog->delete();
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
 
@@ -343,7 +343,7 @@ function nitropack_add_tag($tag = NULL, $flush = false) {
             try {
                 // Check whether this is the home page and tag this URL with pageType:home
                 $nitro->getApi()->tagUrl($nitro->getUrl(), array_map("nitropack_filter_tag", $addedTags));
-            } catch (\Exception $e) {}
+            } catch (\Throwable $e) {}
         }
     }
 }
@@ -379,7 +379,7 @@ function nitropack_init_webhooks() {
                 $nitro->getApi()->setWebhook("config", $configUrl);
                 $nitro->getApi()->setWebhook("cache_clear", $cacheClearUrl);
                 $nitro->getApi()->setWebhook("cache_ready", $cacheReadyUrl);
-            } catch (\Exception $e) {}
+            } catch (\Throwable $e) {}
         }
     }
 }
