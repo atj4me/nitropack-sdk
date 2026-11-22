@@ -35,7 +35,7 @@ class Base {
         $this->backlog->append($entry);
     }
 
-    protected function makeRequest($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $async = false, $verifySSL = false) {
+    protected function makeRequest($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $async = false, $verifySSL = true) {
         $backlogEntry = array(
             "path" => $path,
             "headers" => $headers,
@@ -135,7 +135,7 @@ class Base {
         return $http;
     }
 
-    protected function makeRequestAsync($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $verifySSL = false) {
+    protected function makeRequestAsync($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $verifySSL = true) {
         return $this->makeRequest($path, $headers, $cookies, $type, $bodyData, true, $verifySSL);
     }
 

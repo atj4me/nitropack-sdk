@@ -6,7 +6,7 @@ class RequestMaker extends Base {
         parent::__construct($siteId);
     }
 
-    public function makeRequest($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $async = false, $verifySSL = false) {
+    public function makeRequest($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $async = false, $verifySSL = true) {
         return parent::makeRequest($path, $headers, $cookies, $type, $bodyData, $async, $verifySSL);
     }
 }

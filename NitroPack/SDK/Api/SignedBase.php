@@ -33,7 +33,7 @@ class SignedBase extends Base {
         parent::addToBacklog($entry);
     }
 
-    protected function makeRequest($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $async = false, $verifySSL = false) {
+    protected function makeRequest($path, $headers = array(), $cookies = array(), $type = 'GET', $bodyData=array(), $async = false, $verifySSL = true) {
         // calculate request signature
         $url = new Url($this->baseUrl . $path);
         $noParamsPath = $url->getPath();
